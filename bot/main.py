@@ -1,12 +1,14 @@
 from aiogram import Dispatcher, Bot, types
-from handlers.start_handler import start_router
-from config.config import config
+from bot.handlers.start_handler import start_router
+from config.config import BOT_TOKEN
 
 
-bot = Bot(token=config.BOT_API)
+bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
-dp.include_routers()
+
+dp.include_router(start_router)
+
 
 async def on_startup(dp):
     commands = [
@@ -18,5 +20,5 @@ async def on_startup(dp):
 async def main():
     await bot.delete_webhook(drop_pending_updates=True)
 
-    await on_startup(dp)
-    await dp.start_polling()
+    await on_startup(dp=dp)
+    await dp.start_polling(bot)
